@@ -60,3 +60,30 @@ stages:
               reportDirectory: '$(System.DefaultWorkingDirectory)/**/htmlcov'
             condition: and( eq( variables['Agent.OS'], 'Linux' ), eq( variables['python.version'], '3.7' ) )
             displayName: Publish Coverage Report
+
+  - stage: Docker
+    dependsOn: Test
+    condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master'), ne(variables['Build.Reason'], 'Schedule'))
+    pool:
+      vmImage: 'ubuntu-latest'
+      jobs:
+        - job: publishDocker
+          steps:
+            - task: Docker@2
+              displayName: Login to docker hub
+              inputs:
+                command: login
+                containerRegistry: DockerLogin
+
+            - task: Docker@2
+              displayName: Build and Push
+              inputs:
+                command: buildAndPush
+                repository: tumesh/python-package-template
+                tags: latest
+
+            - task: Docker@2
+              displayName: Logout
+              inputs:
+                command: logout
+                containerRegistry: DockerLogin
