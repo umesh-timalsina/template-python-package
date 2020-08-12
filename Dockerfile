@@ -20,7 +20,7 @@ RUN conda update conda -yq && \
 	. /opt/conda/etc/profile.d/conda.sh && \
 	conda create -n template-python-package-docker python=$PY_VERSION nomkl --file requirements-dev.txt && \
 	conda activate template-python-package-docker && \
-        python setup.py install && \
+    python setup.py install && \
 	echo "source activate template-python-package-docker" >> \
 	/home/anaconda/.profile && \
 	conda clean -afy && \
