@@ -41,7 +41,7 @@ stages:
           - bash: |
               source activate test-environment
               pip install pytest-azurepipelines
-              python -m pytest -v --pyargs mbuild --cov=template_python_package --no-coverage-upload
+              python -m pytest -v --pyargs template_python_package --cov=template_python_package --no-coverage-upload
             displayName: Run Tests
 
           - bash: |
