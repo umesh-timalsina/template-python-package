@@ -49,7 +49,7 @@ stages:
               coverage xml
               codecov --file ./coverage.xml --token 69fe12c5-eaf0-4bc9-98ed-d7dff1eac76f
               coverage html
-              condition: and( eq( variables['Agent.OS'], 'Linux' ), eq( variables['python.version'], '3.7' ) )
+            condition: and( eq( variables['Agent.OS'], 'Linux' ), eq( variables['python.version'], '3.7' ) )
             displayName: Upload Coverage Report
 
 
