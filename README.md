@@ -1,3 +1,6 @@
+[![Build Status](https://dev.azure.com/umeshtimalsina0644/template-python-project/_apis/build/status/umesh-timalsina.template-python-package?branchName=master)](https://dev.azure.com/umeshtimalsina0644/template-python-project/_build/latest?definitionId=3&branchName=master)
+[![codecov](https://codecov.io/gh/umesh-timalsina/template-python-package/branch/master/graph/badge.svg)](https://codecov.io/gh/umesh-timalsina/template-python-package)
+
 # Template Python Package
 Welcome to template python package. This package is meant to test releasing a distribution in pypi and test pypi via azure pipelines from github. 
 
