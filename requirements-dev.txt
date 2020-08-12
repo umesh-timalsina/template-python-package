@@ -1,2 +1,4 @@
 pytest
 bump2version
+pytest-cov
+codecov
