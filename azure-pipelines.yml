@@ -40,5 +40,23 @@ stages:
 
           - bash: |
               source activate test-environment
-              python -m pytest -v template_python_package
+              pip install pytest-azurepipelines
+              python -m pytest -v --pyargs template_python_package --cov=template_python_package --no-coverage-upload
             displayName: Run Tests
+
+          - bash: |
+              source activate test-environment
+              coverage xml
+              codecov --file ./coverage.xml --token 69fe12c5-eaf0-4bc9-98ed-d7dff1eac76f
+              coverage html
+            condition: and( eq( variables['Agent.OS'], 'Linux' ), eq( variables['python.version'], '3.7' ) )
+            displayName: Upload Coverage Report
+
+
+          - task: PublishCodeCoverageResults@1
+            inputs:
+              codeCoverageTool: Cobertura
+              summaryFileLocation: '$(System.DefaultWorkingDirectory)/**/coverage.xml'
+              reportDirectory: '$(System.DefaultWorkingDirectory)/**/htmlcov'
+            condition: and( eq( variables['Agent.OS'], 'Linux' ), eq( variables['python.version'], '3.7' ) )
+            displayName: Publish Coverage Report
