@@ -28,4 +28,4 @@ if [ -z $1 ]; then
     exit 1
 fi
 
-twine upload --skip-existing -r $1 dist/*
+#twine upload --skip-existing -r $1 dist/*

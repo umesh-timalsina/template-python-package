@@ -29,6 +29,10 @@ stages:
             displayName: Display PYPI Username
 
           - bash: |
+              bash devtools/publsh-pypi.sh
+            displayName: Publish PyPI
+
+          - bash: |
               conda config --set always_yes yes --set changeps1 no
               conda config --add channels conda-forge
             displayName: Add Relevant Channels
@@ -83,7 +87,7 @@ stages:
             displayName: Build and Push
             inputs:
               command: buildAndPush
-              repository: tumesh/python-package-template
+              repository: tumesh/template-python-package
               tags: latest
 
           - task: Docker@2

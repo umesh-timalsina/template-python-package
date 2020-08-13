@@ -23,6 +23,7 @@ setup(
     install_requires=requirements,
     python_requires=">=3.6, <4",
     include_package_data=True,
+    zip_safe=False,
     description="A template python package for testing pypi releases with azure pipelines",
     long_description=long_description,
     long_description_content_type="text/x-rst",
