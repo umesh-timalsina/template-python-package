@@ -18,7 +18,6 @@ username: $PYPI_USERNAME
 password: $PYPI_PASSWORD
 EOF
 
-source activate test-environment
 pip install setuptools twine wheel
 python setup.py sdist bdist_wheel
 
@@ -28,4 +27,4 @@ if [ -z $1 ]; then
     exit 1
 fi
 
-#twine upload --skip-existing -r $1 dist/*
+twine upload --skip-existing -r $1 dist/*

@@ -56,14 +56,6 @@ stages:
             condition: and( eq( variables['Agent.OS'], 'Linux' ), eq( variables['python.version'], '3.7' ) )
             displayName: Upload Coverage Report
 
-          - bash: |
-              ./devtools/publish-pypi.sh testpypi
-            env:
-              PYPI_USERNAME: $(PYPI_USERNAME)
-              PYPI_PASSWORD: $(PYPI_PASSWORD)
-            condition: and(succeeded(), eq(variables['python.version'], '3.7'), startsWith(variables['Build.SourceBranch'], 'refs/tags/v'))
-            displayName: Publish Test PyPI
-
           - task: PublishCodeCoverageResults@1
             inputs:
               codeCoverageTool: Cobertura
@@ -72,9 +64,28 @@ stages:
             condition: and( eq( variables['Agent.OS'], 'Linux' ), eq( variables['python.version'], '3.7' ) )
             displayName: Publish Coverage Report
 
+          - bash: |
+              source activate test-environment
+              ./devtools/publish-pypi.sh testpypi
+            env:
+              PYPI_USERNAME: $(PYPI_USERNAME)
+              PYPI_PASSWORD: $(PYPI_PASSWORD)
+            condition: and(succeeded(), eq(variables['python.version'], '3.7'), startsWith(variables['Build.SourceBranch'], 'refs/tags/v'))
+            displayName: Publish Test PyPI
+
+          - bash: |
+              source activate test-environment
+              ./devtools/publish-pypi.sh pypi
+            env:
+              PYPI_USERNAME: $(PYPI_USERNAME)
+              PYPI_PASSWORD: $(PYPI_PASSWORD)
+            condition: and(succeeded(), eq(variables['python.version'], '3.7'), startsWith(variables['Build.SourceBranch'], 'refs/tags/v'))
+            displayName: Publish PyPI
+
+
   - stage: Docker
     dependsOn: Test
-    condition: and(succeeded(), or(eq(variables['Build.SourceBranch'], 'refs/heads/8-release-stage'), startsWith(variables['Build.SourceBranch'], 'refs/tags/v')), ne(variables['Build.Reason'], 'Schedule'))
+    condition: and(succeeded(), or(eq(variables['Build.SourceBranch'], 'refs/heads/master'), startsWith(variables['Build.SourceBranch'], 'refs/tags/v')), ne(variables['Build.Reason'], 'Schedule'))
     pool:
       vmImage: 'ubuntu-latest'
     jobs:
