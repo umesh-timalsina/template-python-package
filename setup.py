@@ -3,7 +3,7 @@ from pathlib import Path
 
 requirements = []
 
-__version__ = "0.1.0"
+__version__ = "0.1.1"
 
 
 # Add README to PyPI
