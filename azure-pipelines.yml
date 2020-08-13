@@ -99,8 +99,8 @@ stages:
               command: buildAndPush
               repository: tumesh/template-python-package
               tags: |
-                $TAG
-                $VERSION
+                $(DOCKER_TAG)
+                $(VERSION)
 
           - task: Docker@2
             displayName: Logout
