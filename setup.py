@@ -13,7 +13,7 @@ with open(Path.joinpath(this_dir, "README.md"), encoding="utf-8") as f:
 
 
 setup(
-    name="template_python_package",
+    name="template-python-package",
     version=__version__,
     packages=find_packages(),
     license="MIT",

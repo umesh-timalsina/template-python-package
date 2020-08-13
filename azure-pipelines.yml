@@ -29,13 +29,6 @@ stages:
             displayName: Display PYPI Username
 
           - bash: |
-              ./devtools/publish-pypi.sh testpypi
-            env:
-              PYPI_USERNAME: $(PYPI_USERNAME)
-              PYPI_PASSWORD: $(PYPI_PASSWORD)
-            displayName: Publish PyPI
-
-          - bash: |
               conda config --set always_yes yes --set changeps1 no
               conda config --add channels conda-forge
             displayName: Add Relevant Channels
@@ -63,6 +56,13 @@ stages:
             condition: and( eq( variables['Agent.OS'], 'Linux' ), eq( variables['python.version'], '3.7' ) )
             displayName: Upload Coverage Report
 
+          - bash: |
+              ./devtools/publish-pypi.sh testpypi
+            env:
+              PYPI_USERNAME: $(PYPI_USERNAME)
+              PYPI_PASSWORD: $(PYPI_PASSWORD)
+            condition: and(succeeded(), eq(variables['python.version'], '3.7'), startsWith(variables['Build.SourceBranch'], 'refs/tags/v'))
+            displayName: Publish Test PyPI
 
           - task: PublishCodeCoverageResults@1
             inputs:
@@ -74,12 +74,19 @@ stages:
 
   - stage: Docker
     dependsOn: Test
-    condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master'), ne(variables['Build.Reason'], 'Schedule'))
+    condition: and(succeeded(), or(eq(variables['Build.SourceBranch'], 'refs/heads/8-release-stage'), startsWith(variables['Build.SourceBranch'], 'refs/tags/v')), ne(variables['Build.Reason'], 'Schedule'))
     pool:
       vmImage: 'ubuntu-latest'
     jobs:
       - job: publishDocker
         steps:
+          - bash: |
+              if [[ $(Build.SourceBranch) == "refs/head/master" ]]; then TAG='latest'; else TAG='stable'; fi
+              if [[ $(Build.SourceBranch) != "refs/head/master" ]]; then VERSION=$(Build.SourceBranch); fi;
+              echo "##vso[task.setvariable variable=VERSION;]${VERSION:11}"
+              echo "##vso[task.setvariable variable=DOCKER_TAG;]$TAG"
+            displayName: Export Docker Tags
+
           - task: Docker@2
             displayName: Login to docker hub
             inputs:
@@ -91,7 +98,9 @@ stages:
             inputs:
               command: buildAndPush
               repository: tumesh/template-python-package
-              tags: latest
+              tags: |
+                $TAG
+                $VERSION
 
           - task: Docker@2
             displayName: Logout
