@@ -85,7 +85,7 @@ stages:
 
   - stage: Docker
     dependsOn: Test
-    condition: and(succeeded(), or(eq(variables['Build.SourceBranch'], '10-docker-tags-fix'), startsWith(variables['Build.SourceBranch'], 'refs/tags/v')), ne(variables['Build.Reason'], 'Schedule'))
+    condition: and(succeeded(), or(eq(variables['Build.SourceBranch'], 'refs/head/10-docker-tags-fix'), startsWith(variables['Build.SourceBranch'], 'refs/tags/v')), ne(variables['Build.Reason'], 'Schedule'))
     pool:
       vmImage: 'ubuntu-latest'
     jobs:
