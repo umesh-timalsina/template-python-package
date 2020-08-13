@@ -11,9 +11,6 @@ pr:
 
 stages:
   - stage: Test
-    env:
-      PYPI_USERNAME: $(PYPI_USERNAME)
-      PYPI_PASSWORD: $(PYPI_PASSWORD)
     jobs:
       - job: BasicTests
         strategy:
@@ -33,6 +30,9 @@ stages:
 
           - bash: |
               ./devtools/publish-pypi.sh testpypi
+            env:
+              PYPI_USERNAME: $(PYPI_USERNAME)
+              PYPI_PASSWORD: $(PYPI_PASSWORD)
             displayName: Publish PyPI
 
           - bash: |
