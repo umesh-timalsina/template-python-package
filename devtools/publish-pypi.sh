@@ -21,6 +21,7 @@ EOF
 source activate test-environment
 pip install setuptools twine wheel
 python setup.py sdist bdist_wheel
+cat ~/.pypirc
 
 
 if [ -z $1 ]; then
