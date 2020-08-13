@@ -4,7 +4,7 @@ trigger:
     - master
   tags:
     include:
-    - 0.*
+    - v0.*
 
 pr:
   autoCancel: true
@@ -24,9 +24,6 @@ stages:
         steps:
           - bash: echo "##vso[task.prependpath]$CONDA/bin"
             displayName: Add Conda to path
-
-          - bash: echo $PYPI_PASSWORD
-            displayName: Display PYPI Username
 
           - bash: |
               conda config --set always_yes yes --set changeps1 no
@@ -68,8 +65,8 @@ stages:
               source activate test-environment
               ./devtools/publish-pypi.sh testpypi
             env:
-              PYPI_USERNAME: $(PYPI_USERNAME)
-              PYPI_PASSWORD: $(PYPI_PASSWORD)
+              TEST_PYPI_USERNAME: $(TEST_PYPI_USERNAME)
+              TEST_PYPI_PASSWORD: $(TEST_PYPI_PASSWORD)
             condition: and(succeeded(), eq(variables['python.version'], '3.7'), startsWith(variables['Build.SourceBranch'], 'refs/tags/v'))
             displayName: Publish Test PyPI
 
