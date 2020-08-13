@@ -1,7 +1,12 @@
 ARG PY_VERSION=3.7
+
 FROM continuumio/miniconda3:4.8.2-alpine AS builder
 
+ARG PY_VERSION
+
 EXPOSE 8888
+
+RUN echo $PY_VERSION
 
 LABEL maintainer.name="umesh timalsina"\
       maintainer.url="https://umesh-timalsina.github.io"

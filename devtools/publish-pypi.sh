@@ -14,11 +14,10 @@ username: ${PYPI_USERNAME}
 password: ${PYPI_PASSWORD}
 [testpypi]
 repository: https://test.pypi.org/legacy/
-username: ${PYPI_USERNAME}
-password: ${PYPI_PASSWORD}
+username: $PYPI_USERNAME
+password: $PYPI_PASSWORD
 EOF
 
-source activate test-environment
 pip install setuptools twine wheel
 python setup.py sdist bdist_wheel
 
