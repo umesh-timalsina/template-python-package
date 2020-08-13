@@ -25,7 +25,7 @@ stages:
           - bash: echo "##vso[task.prependpath]$CONDA/bin"
             displayName: Add Conda to path
 
-          - bash: echo ${PYPI_USERNAME}
+          - bash: echo $PYPI_PASSWORD
             displayName: Display PYPI Username
 
           - bash: |
