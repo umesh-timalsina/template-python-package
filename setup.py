@@ -26,5 +26,5 @@ setup(
     zip_safe=False,
     description="A template python package for testing pypi releases with azure pipelines",
     long_description=long_description,
-    long_description_content_type="text/x-rst",
+    long_description_content_type="text/markdown",
 )
