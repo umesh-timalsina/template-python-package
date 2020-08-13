@@ -85,15 +85,15 @@ stages:
 
   - stage: Docker
     dependsOn: Test
-    condition: and(succeeded(), or(eq(variables['Build.SourceBranch'], 'refs/heads/master'), startsWith(variables['Build.SourceBranch'], 'refs/tags/v')), ne(variables['Build.Reason'], 'Schedule'))
+    condition: and(succeeded(), or(eq(variables['Build.SourceBranch'], '10-docker-tags-fix'), startsWith(variables['Build.SourceBranch'], 'refs/tags/v')), ne(variables['Build.Reason'], 'Schedule'))
     pool:
       vmImage: 'ubuntu-latest'
     jobs:
       - job: publishDocker
         steps:
           - bash: |
-              if [[ $(Build.SourceBranch) == "refs/head/master" ]]; then TAG='latest'; else TAG='stable'; fi
-              if [[ $(Build.SourceBranch) != "refs/head/master" ]]; then VERSION=$(Build.SourceBranch); fi;
+              if [[ $BUILD_SOURCEBRANCH == "refs/head/master" ]]; then TAG='latest'; else TAG='stable'; fi
+              if [[ $BUILD_SOURCEBRANCH != "refs/head/master" ]]; then VERSION=$(Build.SourceBranch); fi;
               echo "##vso[task.setvariable variable=VERSION;]${VERSION:11}"
               echo "##vso[task.setvariable variable=DOCKER_TAG;]$TAG"
             displayName: Export Docker Tags
