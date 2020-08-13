@@ -29,7 +29,7 @@ stages:
             displayName: Display PYPI Username
 
           - bash: |
-              ./devtools/publsh-pypi.sh
+              ./devtools/publish-pypi.sh testpypi
             displayName: Publish PyPI
 
           - bash: |
