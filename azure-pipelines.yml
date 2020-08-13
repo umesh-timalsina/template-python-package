@@ -92,8 +92,8 @@ stages:
       - job: publishDocker
         steps:
           - bash: |
-              if [[ $(Build.SourceBranch) == "refs/head/master" ]]; then TAG='latest'; else TAG='stable'; fi
-              if [[ $(Build.SourceBranch) != "refs/head/master" ]]; then VERSION=$(Build.SourceBranch); fi;
+              if [[ $BUILD_SOURCEBRANCH == "refs/heads/master" ]]; then TAG='latest'; else TAG='stable'; fi
+              if [[ $BUILD_SOURCEBRANCH != "refs/heads/master" ]]; then VERSION=$(Build.SourceBranch); fi;
               echo "##vso[task.setvariable variable=VERSION;]${VERSION:11}"
               echo "##vso[task.setvariable variable=DOCKER_TAG;]$TAG"
             displayName: Export Docker Tags
